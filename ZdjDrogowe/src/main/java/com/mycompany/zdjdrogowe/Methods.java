@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
  */
 public class Methods {
     
-    private double[][] color = {{244.0, 255.0}, {244.0, 255.0}, {244.0, 240.0}}; //blue
+    private double[][] color = {{244.0, 255.0}, {244.0, 255.0}, {234.0, 250.0}}; //blue
     
 
     
