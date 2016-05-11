@@ -12,7 +12,7 @@ package com.mycompany.zdjdrogowe;
 public class Application {
     
     
-    public static void maun(){
+    public static void main(String [] args){
         Methods methods = new Methods();
         methods.search();
     }
