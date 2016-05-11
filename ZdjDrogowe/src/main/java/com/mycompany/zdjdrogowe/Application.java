@@ -14,7 +14,7 @@ public class Application {
     
     public static void main(String [] args){
         Methods methods = new Methods();
-        methods.search();
+        methods.searchBlueObject();
     }
     
 }

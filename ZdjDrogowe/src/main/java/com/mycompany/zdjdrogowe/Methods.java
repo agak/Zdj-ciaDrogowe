@@ -6,7 +6,6 @@
 package com.mycompany.zdjdrogowe;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,18 +18,20 @@ import javax.imageio.ImageIO;
  * @author agnieszka
  */
 public class Methods {
-
-    public void search() {
+    
+    private double[][] blue = {{244.0, 255.0}, {244.0, 255.0}, {244.0, 240.0}};
+    
+    public void searchBlueObject() {
         File file = new File("../../gotowaBaza");
-        listFilesForFolder(file);
+        listFilesForFolder(file, blue);
     }
-
-    public void listFilesForFolder(final File folder) {
+    
+    private void listFilesForFolder(File folder, double[][] color) {
         List<File> pictures = new ArrayList();
         for (final File fileEntry : folder.listFiles()) {
             
             String extension = "";
-
+            
             int i = fileEntry.getName().lastIndexOf('.');
             if (i > 0) {
                 extension = fileEntry.getName().substring(i + 1);
@@ -43,11 +44,11 @@ public class Methods {
         pictures.sort(c);
         pictures.stream().forEach((pict) -> {
             System.out.println(pict.getName());
-            getPixelFromImage(pict);
+            loadImage(pict, color);
         });
     }
-
-    private void getPixelFromImage(final File fileEntry) {
+    
+    private void loadImage(File fileEntry, double[][] color) {
         BufferedImage imageToChoice = null;
         try {
             imageToChoice = ImageIO.read(fileEntry);
@@ -55,12 +56,26 @@ public class Methods {
             System.err.println("Blad odczytu obrazka");
         }
         
+        int[] cordinatePixel=findPixelWithColor(imageToChoice, color);
+        //segmentacja
+    }
+    
+    private int[] findPixelWithColor(BufferedImage imageToChoice, double[][] color) {
         double[] pixel = new double[3];
+        int [] cordinate= new int [2];
+        outerloop:
         for (int a = 0; a < imageToChoice.getWidth(); a++) {
             for (int b = 0; b < imageToChoice.getHeight(); b++) {
                 imageToChoice.getRaster().getPixel(a, b, pixel);
+                
+                if (pixel[0] > color[0][0] && pixel[0] < color[0][1] && pixel[1] > color[1][0] && pixel[1] < color[1][1] & pixel[2] > color[2][0] && pixel[2] < color[2][1]) {
+                   cordinate[0]=a;
+                    cordinate[1]=b;
+                    break outerloop;
+                }
                 //System.out.println(a+" "+b+" "+pixel[0]+" "+pixel[1]+" "+pixel[2]+" ");
             }
         }
+        return cordinate;
     }
 }
