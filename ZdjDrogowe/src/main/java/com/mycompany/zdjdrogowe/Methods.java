@@ -9,12 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import javax.imageio.ImageIO;
-import static javax.swing.Spring.height;
-import static javax.swing.Spring.width;
 
 /**
  *
@@ -23,33 +21,30 @@ import static javax.swing.Spring.width;
 public class Methods {
 
     public void search() {
-        try {
-            File file = new File("gotowaBaza");
-            listFilesForFolder(file);
-        } catch (IOException ex) {
-            Logger.getLogger(Methods.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        File file = new File("../../gotowaBaza");
+        listFilesForFolder(file);
     }
 
-    public void listFilesForFolder(final File folder) throws IOException {
+    public void listFilesForFolder(final File folder) {
+        List<File> pictures = new ArrayList();
         for (final File fileEntry : folder.listFiles()) {
-            if (fileEntry.isDirectory()) {
-                listFilesForFolder(fileEntry);
-            } else {
-                String extension = "";
+            
+            String extension = "";
 
-                int i = fileEntry.getName().lastIndexOf('.');
-                if (i > 0) {
-                    extension = fileEntry.getName().substring(i + 1);
-                }
-                if (extension.equals("jpg")) {
-                    System.out.println(fileEntry.getName());
-
-                    getPixelFromImage(fileEntry);
-
-                }
+            int i = fileEntry.getName().lastIndexOf('.');
+            if (i > 0) {
+                extension = fileEntry.getName().substring(i + 1);
+            }
+            if (extension.equals("jpg")) {
+                pictures.add(fileEntry);
             }
         }
+        Comparator<File> c = (s1, s2) -> s1.getName().compareTo(s2.getName());
+        pictures.sort(c);
+        pictures.stream().forEach((pict) -> {
+            System.out.println(pict.getName());
+            getPixelFromImage(pict);
+        });
     }
 
     private void getPixelFromImage(final File fileEntry) {
