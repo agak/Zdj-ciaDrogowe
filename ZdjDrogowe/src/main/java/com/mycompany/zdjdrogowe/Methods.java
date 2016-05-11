@@ -19,14 +19,11 @@ import javax.imageio.ImageIO;
  */
 public class Methods {
     
-    private double[][] blue = {{244.0, 255.0}, {244.0, 255.0}, {244.0, 240.0}};
+    private double[][] color = {{244.0, 255.0}, {244.0, 255.0}, {244.0, 240.0}}; //blue
     
-    public void searchBlueObject() {
-        File file = new File("../../gotowaBaza");
-        listFilesForFolder(file, blue);
-    }
+
     
-    private void listFilesForFolder(File folder, double[][] color) {
+    public List<File> makePicturesList(File folder) {
         List<File> pictures = new ArrayList();
         for (final File fileEntry : folder.listFiles()) {
             
@@ -42,13 +39,17 @@ public class Methods {
         }
         Comparator<File> c = (s1, s2) -> s1.getName().compareTo(s2.getName());
         pictures.sort(c);
+        return pictures;  
+    }
+    
+    public void loadImages(List<File> pictures){
         pictures.stream().forEach((pict) -> {
             System.out.println(pict.getName());
-            loadImage(pict, color);
+            loadImage(pict);
         });
     }
     
-    private void loadImage(File fileEntry, double[][] color) {
+    private void loadImage(File fileEntry) {
         BufferedImage imageToChoice = null;
         try {
             imageToChoice = ImageIO.read(fileEntry);
@@ -76,6 +77,7 @@ public class Methods {
                 //System.out.println(a+" "+b+" "+pixel[0]+" "+pixel[1]+" "+pixel[2]+" ");
             }
         }
+        System.out.println(cordinate[0]+" "+cordinate[1]);
         return cordinate;
     }
 }

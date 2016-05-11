@@ -5,6 +5,10 @@
  */
 package com.mycompany.zdjdrogowe;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author agnieszka
@@ -13,8 +17,14 @@ public class Application {
     
     
     public static void main(String [] args){
+        File file = new File("../../gotowaBaza");
         Methods methods = new Methods();
-        methods.searchBlueObject();
+        
+        List<File> pictures = new ArrayList();
+        pictures = methods.makePicturesList(file);
+        
+        methods.loadImages(pictures);
+        
     }
     
 }
