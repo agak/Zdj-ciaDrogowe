@@ -9,12 +9,11 @@ package com.mycompany.zdjdrogowe;
  *
  * @author agnieszka
  */
-public class Application {
+public class Methods {
     
-    
-    public static void maun(){
-        Methods methods = new Methods();
-        methods.search();
+    public void search(){
+        
     }
+    
     
 }
