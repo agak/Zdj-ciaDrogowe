@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -19,7 +20,7 @@ import javax.imageio.ImageIO;
  */
 public class Methods {
     
-    private double[][] color = {{244.0, 255.0}, {244.0, 255.0}, {234.0, 250.0}}; //blue
+    private double[][] color = {{120.0, 255.0}, {150.0, 255.0}, {120.0, 250.0}}; //blue
     
 
     
@@ -59,6 +60,12 @@ public class Methods {
         
         int[] cordinatePixel=findPixelWithColor(imageToChoice, color);
         //segmentacja
+        List<Integer> XCoordinatesOfArea = new ArrayList();
+        List<Integer> YCoordinatesOfArea = new ArrayList();
+        designateArea(imageToChoice, cordinatePixel,XCoordinatesOfArea,YCoordinatesOfArea);
+        
+        //oznaczenie wyznaczonej przestrzeni (znaku drogowego) w prostokąt
+        markAreaInARectangle(XCoordinatesOfArea, YCoordinatesOfArea);
     }
     
     private int[] findPixelWithColor(BufferedImage imageToChoice, double[][] color) {
@@ -77,7 +84,50 @@ public class Methods {
                 //System.out.println(a+" "+b+" "+pixel[0]+" "+pixel[1]+" "+pixel[2]+" ");
             }
         }
-        System.out.println(cordinate[0]+" "+cordinate[1]);
+        System.out.println("PixelWithColor: "+cordinate[0]+" "+cordinate[1]);
         return cordinate;
     }
+    
+    
+    private void designateArea(BufferedImage imageToChoice, int[] cordinatePixel,List<Integer> XCoordinatesOfArea,List<Integer> YCoordinatesOfArea){
+        
+        double[] colorRGB = new double[3];
+
+        for(int x=cordinatePixel[0]-1;x<=cordinatePixel[0]+1;x++){
+            for(int y=cordinatePixel[1]-1;y<=cordinatePixel[1]+1;y++){
+                imageToChoice.getRaster().getPixel(x, y, colorRGB);
+                if(colorRGB[0] > color[0][0] && colorRGB[0] < color[0][1] && colorRGB[1] > color[1][0] && colorRGB[1] < color[1][1] & colorRGB[2] > color[2][0] && colorRGB[2] < color[2][1]){
+                    if((!XCoordinatesOfArea.contains(x)) || (!YCoordinatesOfArea.contains(y))){
+                        if(!XCoordinatesOfArea.contains(x)){
+                            XCoordinatesOfArea.add(x);
+                        }
+                        if(!YCoordinatesOfArea.contains(y)){
+                            YCoordinatesOfArea.add(y);
+                        }
+                        
+                        cordinatePixel[0]=x;
+                        cordinatePixel[1]=y;
+                        designateArea(imageToChoice, cordinatePixel, XCoordinatesOfArea, YCoordinatesOfArea);
+                    }
+                }
+            }
+        }
+    }
+    
+    private void markAreaInARectangle(List XCoordinatesOfArea, List YCoordinatesOfArea){
+        int Xmin=(int) Collections.min(XCoordinatesOfArea);
+        int Xmax=(int) Collections.max(XCoordinatesOfArea);
+        int Ymin=(int) Collections.min(YCoordinatesOfArea);
+        int Ymax=(int) Collections.max(YCoordinatesOfArea);
+        /*XCoordinatesOfArea.stream().forEach((Xc) -> {
+            System.out.println("Xcord: "+Xc);
+        });
+        YCoordinatesOfArea.stream().forEach((Yc) -> {
+            System.out.println("Ycord: "+Yc);
+        });*/
+        System.out.println("Xmin: "+Xmin+"; Xmax: "+Xmax+"; Ymin: "+Ymin+"; Ymax: "+Ymax);
+        
+        //do napisania zapisywanie do pliku tekstowego wyników
+    }
+    
 }
