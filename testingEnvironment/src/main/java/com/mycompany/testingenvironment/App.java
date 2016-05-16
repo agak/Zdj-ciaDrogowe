@@ -14,11 +14,12 @@ import java.util.List;
  * @author agnieszka
  */
 public class App {
-    
-        public static void main(String[] args) {
+
+    public static void main(String[] args) {
         Test test = new Test();
-test.run();
+        //test.run(args[0],args[1]);
+        test.run("../gotowaBaza/gt.txt","../znalezioneZdjDrogowe.txt");
 
     }
-    
+
 }
