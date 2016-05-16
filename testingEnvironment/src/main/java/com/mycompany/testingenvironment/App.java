@@ -17,8 +17,8 @@ public class App {
 
     public static void main(String[] args) {
         Test test = new Test();
-        //test.run(args[0],args[1]);
-        test.run("../gotowaBaza/gt.txt","../znalezioneZdjDrogowe.txt");
+        //test.meanSquaredErrorTest(args[0],args[1]);
+        test.meanSquaredErrorTest("../gotowaBaza/gt.txt","../znalezioneZdjDrogowe.txt");
 
     }
 

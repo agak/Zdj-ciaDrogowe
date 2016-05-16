@@ -23,63 +23,60 @@ import java.util.List;
  */
 public class Test {
 
-    public void run(String modelResultFileName, String obtainedResultFileName) {
-        System.out.println("To jest klasa testowa");
-
+    public void meanSquaredErrorTest(String modelResultFileName, String obtainedResultFileName) {
         List<Rows> obtainedResultList = loadDataFromFiles(obtainedResultFileName);
         List<Rows> modelResultList = loadDataFromFiles(modelResultFileName);
-
         List<MeanSquaredErrorBetweenPoints> meanSquaredErrorList = new ArrayList<>();
 
         String prevFileName = "";
         int obtainedSize = 0;
         for (Rows obtainedRows : obtainedResultList) {
-            System.out.println("A " + obtainedRows.getFileName());
+            //System.out.println("A " + obtainedRows.getFileName());
             if (!prevFileName.equals(obtainedRows.getFileName())) {
-                System.out.println("if false");
-                Comparator<MeanSquaredErrorBetweenPoints> c = (s1, s2) -> new Double(s1.getMeanSquaredError()).compareTo(s2.getMeanSquaredError());
-                meanSquaredErrorList.sort(c);
-                if (meanSquaredErrorList.size() > 0) {
-                    for (int i = 0; i < obtainedSize; i++) {
-
-                        System.out.println("Błąd śreniokwadratowy dla obrazu " + prevFileName + " " + meanSquaredErrorList.get(0).getMeanSquaredError());
-                        int modelPointNumber = meanSquaredErrorList.get(0).getModelPoint();
-                        int obtainedPointNumber = meanSquaredErrorList.get(0).getObtainedPoint();
-                        System.out.println(modelPointNumber + " " + obtainedPointNumber);
-
-                        Iterator<MeanSquaredErrorBetweenPoints> iterator = meanSquaredErrorList.iterator();
-                        while (iterator.hasNext()) {
-                            MeanSquaredErrorBetweenPoints meanSquaredErrorBetweenPoints = iterator.next();
-                            if (meanSquaredErrorBetweenPoints.getModelPoint() == modelPointNumber || meanSquaredErrorBetweenPoints.getObtainedPoint() == obtainedPointNumber) {
-                                iterator.remove();
-                            }
-                        }
-                    }
-                }
-                obtainedSize = 0;
-                meanSquaredErrorList.clear();
+                obtainedSize = returnResult(meanSquaredErrorList, obtainedSize, prevFileName);
             }
 
             for (Rows modelRows : modelResultList) {
                 if (modelRows.getFileName().equals(obtainedRows.getFileName())) {
-                    System.out.println("B " + modelRows.getFileName());
+                    //System.out.println("B " + modelRows.getFileName());
 
                     double meanSquaredError = Math.sqrt(Math.pow(modelRows.getXmin() - obtainedRows.getXmin(), 2) + Math.pow(modelRows.getXmax() - obtainedRows.getXmax(), 2)
                             + Math.pow(modelRows.getYmin() - obtainedRows.getYmin(), 2) + Math.pow(modelRows.getYmax() - obtainedRows.getYmax(), 2)) / 4.0;
 
-                    System.out.println("meanSquaredError" + meanSquaredError);
-
+                    //System.out.println("meanSquaredError" + meanSquaredError);
                     meanSquaredErrorList.add(new MeanSquaredErrorBetweenPoints(obtainedResultList.indexOf(obtainedRows), modelResultList.indexOf(modelRows), meanSquaredError));
-                    System.out.println(obtainedResultList.indexOf(obtainedRows) + " " + modelResultList.indexOf(modelRows) + " " + meanSquaredError);
-                    System.out.println("distancesList size" + meanSquaredErrorList.size());
-
+                    //System.out.println(obtainedResultList.indexOf(obtainedRows) + " " + modelResultList.indexOf(modelRows) + " " + meanSquaredError);
+                    //System.out.println("distancesList size" + meanSquaredErrorList.size());
                 }
             }
             obtainedSize++;
             prevFileName = obtainedRows.getFileName();
-
         }
+    }
 
+    private int returnResult(List<MeanSquaredErrorBetweenPoints> meanSquaredErrorList, int obtainedSize, String prevFileName) {
+        Comparator<MeanSquaredErrorBetweenPoints> c = (s1, s2) -> new Double(s1.getMeanSquaredError()).compareTo(s2.getMeanSquaredError());
+        meanSquaredErrorList.sort(c);
+        if (meanSquaredErrorList.size() > 0) {
+            for (int i = 0; i < obtainedSize; i++) {
+                
+                System.out.println("Błąd śreniokwadratowy dla obrazu " + prevFileName + " " + meanSquaredErrorList.get(0).getMeanSquaredError());
+                int modelPointNumber = meanSquaredErrorList.get(0).getModelPoint();
+                int obtainedPointNumber = meanSquaredErrorList.get(0).getObtainedPoint();
+                //System.out.println(modelPointNumber + " " + obtainedPointNumber);
+                
+                Iterator<MeanSquaredErrorBetweenPoints> iterator = meanSquaredErrorList.iterator();
+                while (iterator.hasNext()) {
+                    MeanSquaredErrorBetweenPoints meanSquaredErrorBetweenPoints = iterator.next();
+                    if (meanSquaredErrorBetweenPoints.getModelPoint() == modelPointNumber || meanSquaredErrorBetweenPoints.getObtainedPoint() == obtainedPointNumber) {
+                        iterator.remove();
+                    }
+                }                obtainedSize = returnResult(meanSquaredErrorList, obtainedSize, prevFileName);
+            }
+        }
+        obtainedSize = 0;
+        meanSquaredErrorList.clear();
+        return obtainedSize;
     }
 
     private List<Rows> loadDataFromFiles(String resultFileName) {
