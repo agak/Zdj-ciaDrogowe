@@ -148,7 +148,7 @@ public class Methods {
 
     private void saveRowToFile(File imageFile, int[] rectangleCoordinate) {
         if (-1!=rectangleCoordinate[0]) {
-            String output = imageFile.getName() + ";" + rectangleCoordinate[0] + ";" + rectangleCoordinate[1] + ";" + rectangleCoordinate[2] + ";" + rectangleCoordinate[3] + "\n";
+            String output = imageFile.getName() + ";" + rectangleCoordinate[0] + ";" + rectangleCoordinate[2] + ";" + rectangleCoordinate[1] + ";" + rectangleCoordinate[3] + "\n";
 
             try {
                 for (int i = 0; i < output.length(); i++) {
