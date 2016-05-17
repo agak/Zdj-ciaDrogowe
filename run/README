@@ -1,0 +1,4 @@
+chmod +x run.sh
+ 
+./run.sh /home/agnieszka/Pulpit/Zdj-ciaDrogowe/ZdjDrogowe > wynik.txt
+

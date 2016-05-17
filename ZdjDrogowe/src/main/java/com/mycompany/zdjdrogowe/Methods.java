@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
  */
 public class Methods {
 
-    FileOutputStream fos = null;
+    FileOutputStream obtainedResulFile = null;
 
     public List<File> makePicturesList(File folder) {
         List<File> pictures = new ArrayList();
@@ -44,20 +44,20 @@ public class Methods {
 
     public void loadImagesAndSaveToFile(List<File> pictures, double[][] color) {
         try {
-            fos = new FileOutputStream("plik.txt");
+            obtainedResulFile = new FileOutputStream("znalezioneZdjDrogowe.txt");
         } catch (IOException ex) {
-            System.out.println("Błąd operacji na pliku: " + ex);
+            System.out.println("Błąd utworzenia pliku: " + ex);
         }
 
         pictures.stream().forEach((pict) -> {
-            System.out.println(pict.getName());
+            //System.out.println(pict.getName());
             loadImage(pict, color);
         });
 
         try {
-            fos.close(); 
+            obtainedResulFile.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Błąd zamykania pliku: " + e);
         }
     }
 
@@ -96,7 +96,7 @@ public class Methods {
                 //System.out.println(a+" "+b+" "+pixel[0]+" "+pixel[1]+" "+pixel[2]+" ");
             }
         }
-        System.out.println("PixelWithColor: " + cordinate[0] + " " + cordinate[1]);
+        //System.out.println("PixelWithColor: " + cordinate[0] + " " + cordinate[1]);
         return cordinate;
     }
 
@@ -134,27 +134,29 @@ public class Methods {
             rectangleCoordinate[1] = (int) Collections.max(XCoordinatesOfArea);
             rectangleCoordinate[2] = (int) Collections.min(YCoordinatesOfArea);
             rectangleCoordinate[3] = (int) Collections.max(YCoordinatesOfArea);
-        }
-        /*XCoordinatesOfArea.stream().forEach((Xc) -> {
+
+            /*XCoordinatesOfArea.stream().forEach((Xc) -> {
             System.out.println("Xcord: "+Xc);
         });
-        YCoordinatesOfArea.stream().forEach((Yc) -> {
+        YCoordinatesOfArea.stoperacji naream().forEach((Yc) -> {
             System.out.println("Ycord: "+Yc);
         });*/
-        System.out.println("Xmin: " + rectangleCoordinate[0] + "; Xmax: " + rectangleCoordinate[1] + "; Ymin: " + rectangleCoordinate[2] + "; Ymax: " + rectangleCoordinate[3]);
-
+            //System.out.println("Xmin: " + rectangleCoordinate[0] + "; Xmax: " + rectangleCoordinate[1] + "; Ymin: " + rectangleCoordinate[2] + "; Ymax: " + rectangleCoordinate[3]);
+        }
         return rectangleCoordinate;
     }
 
     private void saveRowToFile(File imageFile, int[] rectangleCoordinate) {
-        String output = imageFile.getName() + ";" + rectangleCoordinate[0] + ";" + rectangleCoordinate[1] + ";" + rectangleCoordinate[2] + ";" + rectangleCoordinate[3] + "\n";
+        if (-1!=rectangleCoordinate[0]) {
+            String output = imageFile.getName() + ";" + rectangleCoordinate[0] + ";" + rectangleCoordinate[1] + ";" + rectangleCoordinate[2] + ";" + rectangleCoordinate[3] + "\n";
 
-        try {
-            for (int i = 0; i < output.length(); i++) {
-                fos.write((int) output.charAt(i));
+            try {
+                for (int i = 0; i < output.length(); i++) {
+                    obtainedResulFile.write((int) output.charAt(i));
+                }
+            } catch (IOException ex) {
+                System.out.println("Błąd zapisu do pliku: " + ex);
             }
-        } catch (IOException ex) {
-            System.out.println("Błąd operacji na pliku: " + ex);
         }
 
     }

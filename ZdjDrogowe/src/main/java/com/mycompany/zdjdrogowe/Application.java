@@ -21,12 +21,13 @@ public class Application {
     private static double[][] white = {{170.0, 255.0}, {170.0, 255.0}, {201.0, 255.0}}; //biały
 
     public static void main(String[] args) {
-        File file = new File("../../gotowaBaza");
+        File file = new File(args[0]);
+        //   File file = new File("../../gotowaBaza");
         Methods methods = new Methods();
 
         List<File> pictures = new ArrayList();
         pictures = methods.makePicturesList(file);
-        System.out.println("Kolor niebieski: ");
+        //System.out.println("Kolor niebieski: ");
         methods.loadImagesAndSaveToFile(pictures, blue2);
 //        System.out.println("Kolor czerwony: ");
 //        methods.loadImagesAndSaveToFile(pictures, red);
