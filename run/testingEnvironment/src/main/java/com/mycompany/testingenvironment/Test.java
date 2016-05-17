@@ -6,13 +6,10 @@
 package com.mycompany.testingenvironment;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -49,8 +46,10 @@ public class Test {
                 obtainedForImageSize = returnResult(meanSquaredErrorList, obtainedForImageSize, prevFileName, modelForImageSize);
             }
         }
-        System.out.println("Średnia błędu śreniokwadratowy dla wszystkich obrazów " + sumMeanSquaredError / countResult);
-        System.out.println("Średnia ilość poprawnie znalezionych znaków " + (double) correctFondAmount / countResult);
+        System.out.println("Średnia błędu śreniokwadratowy dla wszystkich obrazów " );
+                System.out.println( sumMeanSquaredError / countResult);
+        System.out.println("Średnia ilość poprawnie znalezionych znaków " );
+                System.out.println( (double) correctFondAmount / countResult);
     }
 
     private int compareWithModel(List<Rows> modelResultList, Rows obtainedRows, List<MeanSquaredErrorBetweenPoints> meanSquaredErrorList, List<Rows> obtainedResultList) {
@@ -75,7 +74,8 @@ public class Test {
 
     private int returnResult(List<MeanSquaredErrorBetweenPoints> meanSquaredErrorList, int obtainedForImageSize, String prevFileName, int modelForImageSize) {
         boolean amountIsTheSame = obtainedForImageSize == modelForImageSize;
-        System.out.println(prevFileName + "  " + obtainedForImageSize + " " + modelForImageSize + " " + Boolean.toString(amountIsTheSame));
+        System.out.println(prevFileName + "\t Wzorcowe " +   "\t Znalezione"  + "\t Poprawność" );
+        System.out.println("\t \t \t"+obtainedForImageSize + "\t \t" + modelForImageSize + " \t " + Boolean.toString(amountIsTheSame));
         if (amountIsTheSame) {
             correctFondAmount++;
         }
@@ -83,7 +83,8 @@ public class Test {
         meanSquaredErrorList.sort(c);
         for (int i = 0; i < obtainedForImageSize; i++) {
             if (meanSquaredErrorList.size() > 0) {
-                System.out.println("Błąd średniokwadratowy dla obrazu " + prevFileName + " " + meanSquaredErrorList.get(0).getMeanSquaredError());
+                System.out.println("Błąd średniokwadratowy dla obrazu " + prevFileName + " " );
+                System.out.println(meanSquaredErrorList.get(0).getMeanSquaredError());
                 countResult++;
                 sumMeanSquaredError = sumMeanSquaredError + meanSquaredErrorList.get(0).getMeanSquaredError();
                 int modelPointNumber = meanSquaredErrorList.get(0).getModelPoint();
