@@ -50,7 +50,7 @@ public class Methods {
         }
 
         pictures.stream().forEach((pict) -> {
-            System.out.println(pict.getName());
+         //   System.out.println(pict.getName());
             loadImage(pict, color);
         });
 
