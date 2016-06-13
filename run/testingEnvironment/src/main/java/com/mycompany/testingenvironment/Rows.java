@@ -24,6 +24,9 @@ public class Rows {
         this.Ymin = Ymin;
         this.Ymax = Ymax;
     }
+    
+    public Rows(){
+    }
 
     public String getFileName() {
         return fileName;
