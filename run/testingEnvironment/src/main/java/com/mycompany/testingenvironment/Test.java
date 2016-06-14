@@ -47,7 +47,7 @@ public class Test {
         double a = (double) modelPointsList.size();
         double b = (double) obtainedPointsList.size();
         double c = (double) correctSignsPointsList.size();
-        double resultTest=(c/(a+(b-c)))*100;
+        double resultTest=((2*c)/(a+b))*100;
         System.out.println("Wynik: "+resultTest+ "%");   
     }
     
